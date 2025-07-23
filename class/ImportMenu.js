@@ -11,6 +11,31 @@ class ImporterMenu extends AnyComponent {
         this.addFileButton.onclick = () => this.popupFileImportDialog();
         this.element.appendChild(this.addFileButton);
 
+        this.dragDropArea = document.createElement('div');
+        this.dragDropArea.className = 'drag-drop-area';
+        this.dragDropArea.textContent = 'Drag and drop files here';
+        this.dragDropArea.ondragover = (event) => {
+            event.preventDefault();
+            this.dragDropArea.classList.add('drag-over');
+        };
+        this.dragDropArea.ondragleave = () => {
+            this.dragDropArea.classList.remove('drag-over');
+        };
+        this.dragDropArea.ondrop = (event) => {
+            event.preventDefault();
+            this.dragDropArea.classList.remove('drag-over');
+            const files = event.dataTransfer.files;
+            for (const file of files) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+                    this.processImportedFile(content, file);
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        this.element.appendChild(this.dragDropArea);
+
         this.imageList = [];
     }
 

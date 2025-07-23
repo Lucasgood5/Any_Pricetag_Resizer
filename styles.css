@@ -39,16 +39,7 @@ h1 {
     background-color: #0056b3;
 }
 
-.imported-image {
-    margin: 20px auto;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    max-width: 75%;
-    justify-content: center;
-    align-items: center;
-}
+
 
 .export-a4 {
     margin: 20px auto;
@@ -112,4 +103,70 @@ h1 {
     height: 100%;
     display: block;
     border-radius: 5px;
+}
+
+.drag-drop-area {
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px dashed #007bff;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.drag-drop-area.drag-over {
+    background-color: #e0f7ff;
+    border-color: #0056b3;
+}
+
+.importer-menu {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.importer-menu button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.importer-menu button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.importer-menu button:active {
+    background-color: #003f8a;
+    transform: scale(0.95);
+}
+
+.imported-image {
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    max-width: 80%;
+    justify-content: center;
+    align-items: center;
+}
+
+div.imported-image canvas {
+    border: 1px solid #ccc;
 }
