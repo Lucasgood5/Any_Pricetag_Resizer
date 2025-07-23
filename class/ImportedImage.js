@@ -1,6 +1,6 @@
 class ImportedImage extends AnyComponent {
     static IMPORT_RESOLUTION = 100 // px per cm
-    constructor(parent, content, file) {
+    constructor(parent, content, file, fileName = file.name) {
         super();
         this.parent = parent;
         this.element = document.createElement('div');
@@ -9,12 +9,12 @@ class ImportedImage extends AnyComponent {
 
         this.image = document.createElement('img');
         this.image.src = content; // Assuming content is a data URL
-        this.image.alt = file.name;
+        this.image.alt = fileName;
         this.element.appendChild(this.image);
         this.image.style.display = 'none'; // Initially hidden
 
         this.title = document.createElement('h2');
-        this.title.textContent = file.name;
+        this.title.textContent = fileName;
         this.element.appendChild(this.title);
         
         this.canvas = document.createElement('canvas');

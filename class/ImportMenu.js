@@ -57,19 +57,51 @@ class ImporterMenu extends AnyComponent {
         fileInput.click(); // Trigger the file input dialog
     }
 
-    processImportedFile(content, file) {
+    processImportedFile(content, file, fileName = file.name) {
         let fileType = file.type;
-        let fileName = file.name;
         if (fileType.startsWith('image/')) {
             return this.processImportedImage(content, file, fileName);
+        } else if (fileType === 'application/pdf') {
+            if (pdfjsLib === undefined) {
+                alert('PDF.js library is not loaded. Maybe you\'re offline?');
+                return false;
+            }
+            return this.processImportedPDF(content, file, fileName);
         }
-        console.warn('Unsupported file type:', fileType);
-        alert('Unsupported file type: ' + fileType);
+        alert('Unsupported file type: ' + fileType + '\nPlease upload an image or PDF file.');
         return false;
     }
 
     processImportedImage(content, file, fileName) {
-        this.imageList.push(new ImportedImage(this.element, content, file));
+        this.imageList.push(new ImportedImage(this.element, content, file, fileName));
+    }
+
+    processImportedPDF(content, file, fileName) {
+        pdfjsLib.getDocument({ data: atob(content.split(',')[1]) }).promise.then((pdf) => {
+            const totalPages = pdf.numPages;
+            for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
+                pdf.getPage(pageIndex).then((page) => {
+                    const viewport = page.getViewport({ scale: 2 });
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+
+                    page.render(renderContext).promise.then(() => {
+                        const imageDataUrl = canvas.toDataURL('image/png');
+                        this.processImportedImage(imageDataUrl, file, `${fileName} (page ${pageIndex}/${totalPages})`);
+                    });
+                });
+            }
+        }).catch((error) => {
+            console.error('Error processing PDF:', error);
+            alert('Failed to process PDF file. Please try another file.');
+        });
     }
 
     getImportedImages() {
