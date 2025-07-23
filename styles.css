@@ -1,0 +1,115 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.global-menu {
+    padding: 10px;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;    
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation-bar {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Center the buttons vertically if needed */
+}
+
+.navigation-bar button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+
+.navigation-bar button:hover {
+    background-color: #0056b3;
+}
+
+.imported-image {
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 75%;
+    justify-content: center;
+    align-items: center;
+}
+
+.export-a4 {
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 75%;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-input label{
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.settings-input input {
+    margin: 5px 0;
+    padding: 5px;
+    width: 100px;
+}
+
+.potential-price-tag {
+    margin: 5px;
+    padding: 5px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    display: inline-block;
+    width: 17.5%; /* Match the canvas width */
+    position: relative;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.potential-price-tag.empty {
+    background-color: #d3d3d3; /* Gray for empty */
+    border-color: #a9a9a9;
+}
+
+.potential-price-tag.empty.selected {
+    background-color: #ffa500; /* Orange for not empty */
+    border-color: #ff8c00;
+}
+
+.potential-price-tag.not-empty {
+    background-color: #ff0000; /* Red for selected and empty */
+    border-color: #8b0000;
+}
+
+.potential-price-tag.not-empty.selected {
+    background-color: #008000; /* Green for selected and not empty */
+    border-color: #006400;
+}
+
+
+
+.potential-price-tag .display-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 5px;
+}
