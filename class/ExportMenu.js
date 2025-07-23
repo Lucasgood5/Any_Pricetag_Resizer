@@ -11,19 +11,25 @@ class ExportMenu extends AnyComponent {
 
         // Generate button
         this.generateButton = document.createElement('button');
-        this.generateButton.textContent = 'Generate';
+        this.generateButton.textContent = 'Download All as PNG';
         this.generateButton.onclick = () => {
-            this.downloadAsPNG();
-        }
+            this.downloadAllAsPNG();
+        };
         this.element.appendChild(this.generateButton);
+
+        // Button to print all A4 pages
+        this.printAllButton = document.createElement('button');
+        this.printAllButton.textContent = 'Print All';
+        this.printAllButton.onclick = () => {
+            this.printAll();
+        };
+        this.element.appendChild(this.printAllButton);
 
         // Output container
         this.outputDiv = document.createElement('div');
         this.outputDiv.className = 'export-output';
         this.element.appendChild(this.outputDiv);
-
         this.canvas = []
-        
     }
 
     show() {
@@ -33,6 +39,25 @@ class ExportMenu extends AnyComponent {
 
     GetSettingsValues() {
         return this.settingsInput.getValues();
+    }
+    // Print all A4 pages
+    printAll() {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`<style>body, html { margin: 0; padding: 0; overflow: hidden; }</style>`);
+        this.canvas.forEach((canvas) => {
+            canvas.buildExportCanvas();
+            const img = canvas.exportCanvas.toDataURL('image/png');
+            printWindow.document.write(`<img src="${img}" style="width:100vw;margin:0;">`);
+        });
+        printWindow.document.write('<script>window.onload = function() { window.print();window.close(); }<\/script>'); // Automatically print when the image loads
+        printWindow.document.close();
+    }
+
+    // Download all as individual PNGs
+    downloadAllAsPNG() {
+        this.canvas.forEach((canvas, index) => {
+            canvas.downloadAsPNG()
+        });
     }
 
     AssignPriceTagsToCanvas() {
@@ -48,7 +73,9 @@ class ExportMenu extends AnyComponent {
         for (let pt of selectedPriceTags) {
             if(!this.canvas[canvasIndex].addPriceTag(pt.getCanvas())) {
                 canvasIndex++;
-                this.canvas.push(new ExportA4(this.outputDiv, this));
+                if (canvasIndex >= this.canvas.length) {
+                    this.canvas.push(new ExportA4(this.outputDiv, this, canvasIndex));
+                }
                 if(!this.canvas[canvasIndex].addPriceTag(pt.getCanvas())) {
                     console.error('Failed to add price tag to canvas:', pt);
                 }
@@ -63,11 +90,5 @@ class ExportMenu extends AnyComponent {
         this.canvas.forEach(c => c.remove());
         this.canvas = [];
         this.AssignPriceTagsToCanvas();
-    }
-
-    downloadAsPNG() {
-        this.canvas.forEach((canvas, index) => {
-            canvas.downloadAsPNG(index);
-        });
     }
 }

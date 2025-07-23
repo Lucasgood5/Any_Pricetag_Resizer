@@ -1,6 +1,6 @@
 class ExportA4 {
     EXPORT_RESOLUTION = 100 // px per cm
-    constructor(Parent, EM) {
+    constructor(Parent, EM, index = 0) {
         this.ExportMenu = EM;
         this.Parent = Parent;
         this.element = document.createElement('div');
@@ -14,6 +14,29 @@ class ExportA4 {
         this.canvas.style.height = 'auto'; // Maintain aspect ratio
         this.element.appendChild(this.canvas);
         this.computeSlots();
+
+        // Add input for naming the A4 page
+        this.nameInput = document.createElement('input');
+        this.nameInput.type = 'text';
+        this.nameInput.placeholder = 'Enter name for this A4';
+        this.element.appendChild(this.nameInput);
+
+        // Add button to download this A4 as PNG
+        this.downloadButton = document.createElement('button');
+        this.downloadButton.textContent = 'Download as PNG';
+        this.downloadButton.onclick = () => {
+            const name = this.nameInput.value || `export_a4_${index}`;
+            this.downloadAsPNG(name);
+        };
+        this.element.appendChild(this.downloadButton);
+
+        // Add button to print this A4
+        this.printButton = document.createElement('button');
+        this.printButton.textContent = 'Print';
+        this.printButton.onclick = () => {
+            this.print();
+        };
+        this.element.appendChild(this.printButton);
 
         //When a slot is clicked it should toggle availability
         this.canvas.addEventListener('click', (event) => {
@@ -103,7 +126,10 @@ class ExportA4 {
         }
     }
 
-    downloadAsPNG(index) {
+    buildExportCanvas() {
+        if(this.exportCanvas) {
+            this.exportCanvas.remove(); // Remove previous export canvas if it exists
+        }
         this.exportCanvas = document.createElement("canvas");
         this.exportCanvas.width = this.canvas.width;
         this.exportCanvas.height = this.canvas.height;
@@ -115,11 +141,25 @@ class ExportA4 {
                 ctx.drawImage(slot.assignedCanvas, slot.x, slot.y, slot.width, slot.height);
             }
         }
+    }
+
+    downloadAsPNG(name = this.nameInput.value) {
+        this.buildExportCanvas();
         const link = document.createElement("a");
-        link.download = `export_a4_${index}.png`;
+        link.download = `${name}.png`;
         link.href = this.exportCanvas.toDataURL("image/png");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    }
+
+    print() {
+        this.buildExportCanvas();
+        const printWindow = window.open('', '_blank');
+        let img = this.exportCanvas.toDataURL('image/png');
+        printWindow.document.write(`<style>body, html { margin: 0; padding: 0; overflow: hidden; }</style>`); 
+        printWindow.document.write(`<img src="${img}" style="width:100vw;margin:0;">`);
+        printWindow.document.write('<script>window.onload = function() { window.print();window.close(); }<\/script>'); // Automatically print when the image loads
+        printWindow.document.close(); // Close the document to finish loading
     }
 }

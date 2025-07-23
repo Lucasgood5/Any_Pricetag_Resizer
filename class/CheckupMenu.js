@@ -12,9 +12,26 @@ class checkupMenu extends AnyComponent{
         this.element.appendChild(this.totalIndicator);
 
         this.regenerateButton = document.createElement('button');
-        this.regenerateButton.textContent = 'Reset Checkup';
+        this.regenerateButton.textContent = 'Automatic Selection';
         this.regenerateButton.onclick = () => this.regenerate();
         this.element.appendChild(this.regenerateButton);
+
+        // Add batch selection/deselection buttons
+        const selectAllButton = document.createElement('button');
+        selectAllButton.textContent = 'Select All';
+        selectAllButton.onclick = () => {
+            this.PTList.forEach(pt => pt.element.classList.add('selected'));
+            this.computeTotal();
+        };
+        this.element.appendChild(selectAllButton);
+
+        const deselectAllButton = document.createElement('button');
+        deselectAllButton.textContent = 'Deselect All';
+        deselectAllButton.onclick = () => {
+            this.PTList.forEach(pt => pt.element.classList.remove('selected'));
+            this.computeTotal();
+        };
+        this.element.appendChild(deselectAllButton);
 
         this.PriceTagsList = document.createElement('ul');
         this.PriceTagsList.className = 'price-tags-list';
