@@ -16,17 +16,20 @@ class SettingsInput {
         this.element.className = 'settings-input ' + additionalClass;
         this.parent.appendChild(this.element);
 
+        // Determine if this is for export settings
+        const isExportSettings = additionalClass.includes('export-settings');
+        
         // Margins block
         this.xMargin = document.createElement('input');
         this.xMargin.type = 'number';
         this.xMargin.placeholder = 'X Margin';
-        this.xMargin.value = 0.575;
+        this.xMargin.value = isExportSettings ? 0.5 : 0.575;
         this.xMargin.onchange = () => this.onSettingsChange();
 
         this.yMargin = document.createElement('input');
         this.yMargin.type = 'number';
         this.yMargin.placeholder = 'Y Margin';
-        this.yMargin.value = 1.07;
+        this.yMargin.value = isExportSettings ? 0.5 : 1.07;
         this.yMargin.onchange = () => this.onSettingsChange();
 
         const marginsBlock = createSettingsBlock('Margins:', [this.xMargin, this.yMargin]);
@@ -36,7 +39,7 @@ class SettingsInput {
         this.widthInput = document.createElement('input');
         this.widthInput.type = 'number';
         this.widthInput.placeholder = 'Width';
-        this.widthInput.value = 3.81;
+        this.widthInput.value = isExportSettings ? 3.8 : 3.81;
         this.widthInput.onchange = () => this.onSettingsChange();
 
         this.heightInput = document.createElement('input');
@@ -52,13 +55,13 @@ class SettingsInput {
         this.xGap = document.createElement('input');
         this.xGap.type = 'number';
         this.xGap.placeholder = 'X Gap';
-        this.xGap.value = 0.15;
+        this.xGap.value = isExportSettings ? 0.25 : 0.15;
         this.xGap.onchange = () => this.onSettingsChange();
 
         this.yGap = document.createElement('input');
         this.yGap.type = 'number';
         this.yGap.placeholder = 'Y Gap';
-        this.yGap.value = 0;
+        this.yGap.value = isExportSettings ? 0.25 : 0;
         this.yGap.onchange = () => this.onSettingsChange();
 
         const gapBlock = createSettingsBlock('Gap:', [this.xGap, this.yGap]);
