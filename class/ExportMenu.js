@@ -7,7 +7,7 @@ class ExportMenu extends AnyComponent {
         this.parent.appendChild(this.element);
 
         // Settings input for export
-        this.settingsInput = new SettingsInput(this, 'export-settings');
+        this.settingsInput = new SettingsInput(this, 'export-settings', SettingsInput.a438mm5x13);
 
         // Generate button
         this.generateButton = document.createElement('button');
