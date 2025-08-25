@@ -13,8 +13,13 @@ class SettingsInput {
 
     static a438mm5x13 = {
         xMargin: 0.5,
+        yMargin: 1.07,
         width: 3.8,
+        height: 2.12,
         xGap: 0.25,
+        yGap: 0,
+        xMaxCount: 5,
+        yMaxCount: 13
     }
 
     constructor(parent, additionalClass = '', defaults = {
